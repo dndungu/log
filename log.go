@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"os"
 	"runtime"
 	"time"
 )
@@ -41,7 +42,7 @@ func WithWriter(w io.Writer) Option {
 
 // New -
 func New(options ...Option) *Log {
-	l := Log{messages: make(chan []byte)}
+	l := Log{messages: make(chan []byte), writer: os.Stdout}
 	for _, option := range options {
 		option(&l)
 	}

@@ -1,0 +1,5 @@
+[![GoDoc](https://godoc.org/github.com/zatiti/log?status.svg)](https://godoc.org/github.com/zatiti/log)
+[![Build Status](https://travis-ci.org/zatiti/log.svg?branch=master)](https://travis-ci.org/zatiti/log)
+[![codecov](https://codecov.io/gh/zatiti/log/branch/master/graph/badge.svg)](https://codecov.io/gh/zatiti/log)
+[![Go Report Card](https://goreportcard.com/badge/github.com/zatiti/log)](https://goreportcard.com/report/github.com/zatiti/log)
+[![Issue Count](https://codeclimate.com/github/zatiti/log/badges/issue_count.svg)](https://codeclimate.com/github/zatiti/log)
