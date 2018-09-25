@@ -18,15 +18,18 @@ const (
 
 // Event -
 type Event struct {
-	Message string    `json:"message"`
-	File    string    `json:"file"`
-	Level   string    `json:"level"`
-	Time    time.Time `json:"time"`
+	Time    time.Time              `json:"time"`
+	Level   string                 `json:"level"`
+	Message string                 `json:"message"`
+	Fields  map[string]interface{} `json:"fields"`
+	File    string                 `json:"file"`
 }
 
 // Log -
 type Log struct {
+	exitFunc func(code int)
 	messages chan []byte
+	fields   map[string]interface{}
 	writer   io.Writer
 }
 
@@ -42,12 +45,23 @@ func WithWriter(w io.Writer) Option {
 
 // New -
 func New(options ...Option) *Log {
-	l := Log{messages: make(chan []byte), writer: os.Stdout}
+	l := Log{
+		exitFunc: os.Exit,
+		fields:   make(map[string]interface{}),
+		messages: make(chan []byte, 1024),
+		writer:   os.Stdout,
+	}
 	for _, option := range options {
 		option(&l)
 	}
 	go l.watch()
 	return &l
+}
+
+//WithFields -
+func (l *Log) WithField(k string, v interface{}) *Log {
+	l.fields[k] = v
+	return l
 }
 
 // Info
@@ -93,6 +107,7 @@ func (l Log) Fatalf(message string, args ...interface{}) {
 // Log -
 func (l Log) Log(level, message string) {
 	e := Event{
+		Fields:  l.fields,
 		Message: message,
 		Level:   level,
 		Time:    time.Now().UTC(),
@@ -105,6 +120,9 @@ func (l Log) Log(level, message string) {
 	if err == nil {
 		l.messages <- b
 	}
+	if level == FATAL {
+		close(l.messages)
+	}
 }
 
 // watch
@@ -113,4 +131,5 @@ func (l Log) watch() {
 		l.writer.Write(m)
 		l.writer.Write([]byte("\n"))
 	}
+	l.exitFunc(1)
 }
