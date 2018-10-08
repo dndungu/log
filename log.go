@@ -43,6 +43,13 @@ func WithWriter(w io.Writer) Option {
 	}
 }
 
+// WithExitFunc
+func WithExitFunc(f func(code int)) Option {
+	return func(l *Log) {
+		l.exitFunc = f
+	}
+}
+
 // New -
 func New(options ...Option) *Log {
 	l := Log{

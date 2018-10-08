@@ -39,7 +39,7 @@ func TestLog(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.message, func(t *testing.T) {
 			buf := Buffer{}
-			l := New(WithWriter(&buf))
+			l := New(WithWriter(&buf), WithExitFunc(func(_ int) {}))
 			l.Log(test.level, test.message)
 			// wait for the l to write to the buffer.
 			time.Sleep(10 * time.Millisecond)
@@ -76,7 +76,7 @@ func TestInfo(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.message, func(t *testing.T) {
 			buf := Buffer{}
-			l := New(WithWriter(&buf))
+			l := New(WithWriter(&buf), WithExitFunc(func(_ int) {}))
 			l.Info(test.message)
 			// wait for the l to write to the buffer.
 			time.Sleep(10 * time.Millisecond)
@@ -106,7 +106,7 @@ func TestInfof(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.message, func(t *testing.T) {
 			buf := Buffer{}
-			l := New(WithWriter(&buf))
+			l := New(WithWriter(&buf), WithExitFunc(func(_ int) {}))
 			l.Infof(test.message, foo)
 			// wait for the l to write to the buffer.
 			time.Sleep(10 * time.Millisecond)
@@ -136,7 +136,7 @@ func TestWarning(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.message, func(t *testing.T) {
 			buf := Buffer{}
-			l := New(WithWriter(&buf))
+			l := New(WithWriter(&buf), WithExitFunc(func(_ int) {}))
 			l.Warning(test.message)
 			// wait for the l to write to the buffer.
 			time.Sleep(10 * time.Millisecond)
@@ -167,7 +167,7 @@ func TestWarningf(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.message, func(t *testing.T) {
 			buf := Buffer{}
-			l := New(WithWriter(&buf))
+			l := New(WithWriter(&buf), WithExitFunc(func(_ int) {}))
 			l.Warningf(test.message, foo)
 			// wait for the l to write to the buffer.
 			time.Sleep(10 * time.Millisecond)
@@ -197,7 +197,7 @@ func TestError(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.message, func(t *testing.T) {
 			buf := Buffer{}
-			l := New(WithWriter(&buf))
+			l := New(WithWriter(&buf), WithExitFunc(func(_ int) {}))
 			l.Error(test.message)
 			// wait for the l to write to the buffer.
 			time.Sleep(10 * time.Millisecond)
@@ -228,7 +228,7 @@ func TestErrorf(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.message, func(t *testing.T) {
 			buf := Buffer{}
-			l := New(WithWriter(&buf))
+			l := New(WithWriter(&buf), WithExitFunc(func(_ int) {}))
 			l.Errorf(test.message, foo)
 			// wait for the l to write to the buffer.
 			time.Sleep(10 * time.Millisecond)
@@ -258,7 +258,7 @@ func TestFatal(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.message, func(t *testing.T) {
 			buf := Buffer{}
-			l := New(WithWriter(&buf))
+			l := New(WithWriter(&buf), WithExitFunc(func(_ int) {}))
 			l.Fatal(test.message)
 			// wait for the l to write to the buffer.
 			time.Sleep(10 * time.Millisecond)
@@ -289,7 +289,7 @@ func TestFatalf(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.message, func(t *testing.T) {
 			buf := Buffer{}
-			l := New(WithWriter(&buf))
+			l := New(WithWriter(&buf), WithExitFunc(func(_ int) {}))
 			l.Fatalf(test.message, foo)
 			// wait for the l to write to the buffer.
 			time.Sleep(10 * time.Millisecond)
