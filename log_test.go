@@ -39,7 +39,11 @@ func TestLog(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.message, func(t *testing.T) {
 			buf := Buffer{}
-			l := New(WithWriter(&buf), WithExitFunc(func(_ int) {}))
+			l := New(
+				WithWriter(&buf),
+				WithExitFunc(func(_ int) {}),
+				WithField("level", test.level),
+			)
 			l.Log(test.level, test.message)
 			// wait for the l to write to the buffer.
 			time.Sleep(10 * time.Millisecond)
@@ -108,14 +112,15 @@ func TestInfof(t *testing.T) {
 			buf := Buffer{}
 			l := New(WithWriter(&buf), WithExitFunc(func(_ int) {}))
 			l.Infof(test.message, foo)
-			// wait for the l to write to the buffer.
+			// wait for the log to write to the buffer.
 			time.Sleep(10 * time.Millisecond)
 			actualEvent := Event{}
 			json.Unmarshal(buf.Get(0), &actualEvent)
-			if actualEvent.Message != fmt.Sprintf(test.message, foo) {
+			expectedMessage := fmt.Sprintf(test.message, foo)
+			if actualEvent.Message != expectedMessage {
 				t.Errorf(
 					"Error, expected to find message: `%s` found `%s`",
-					test.message,
+					expectedMessage,
 					actualEvent.Message,
 				)
 			}
@@ -173,10 +178,11 @@ func TestWarningf(t *testing.T) {
 			time.Sleep(10 * time.Millisecond)
 			actualEvent := Event{}
 			json.Unmarshal(buf.Get(0), &actualEvent)
-			if actualEvent.Message != fmt.Sprintf(test.message, foo) {
+			expectedMessage := fmt.Sprintf(test.message, foo)
+			if actualEvent.Message != expectedMessage {
 				t.Errorf(
 					"Error, expected to find message: `%s` found `%s`",
-					test.message,
+					expectedMessage,
 					actualEvent.Message,
 				)
 			}
@@ -234,10 +240,11 @@ func TestErrorf(t *testing.T) {
 			time.Sleep(10 * time.Millisecond)
 			actualEvent := Event{}
 			json.Unmarshal(buf.Get(0), &actualEvent)
-			if actualEvent.Message != fmt.Sprintf(test.message, foo) {
+			expectedMessage := fmt.Sprintf(test.message, foo)
+			if actualEvent.Message != expectedMessage {
 				t.Errorf(
 					"Error, expected to find message: `%s` found `%s`",
-					test.message,
+					expectedMessage,
 					actualEvent.Message,
 				)
 			}
@@ -295,10 +302,11 @@ func TestFatalf(t *testing.T) {
 			time.Sleep(10 * time.Millisecond)
 			actualEvent := Event{}
 			json.Unmarshal(buf.Get(0), &actualEvent)
-			if actualEvent.Message != fmt.Sprintf(test.message, foo) {
+			expectedMessage := fmt.Sprintf(test.message, foo)
+			if actualEvent.Message != expectedMessage {
 				t.Errorf(
 					"Error, expected to find message: `%s` found `%s`",
-					test.message,
+					expectedMessage,
 					actualEvent.Message,
 				)
 			}
