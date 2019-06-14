@@ -74,9 +74,19 @@ func (l Log) Log(level, message string) {
 }
 
 func (l Log) watch() {
+	var err error
 	for m := range l.messages {
-		l.writer.Write(m)
-		l.writer.Write([]byte("\n"))
+		_, err = l.writer.Write(m)
+
+		if err != nil {
+			return
+		}
+
+		_, err = l.writer.Write([]byte("\n"))
+
+		if err != nil {
+			return
+		}
 	}
 
 	l.exit(1)

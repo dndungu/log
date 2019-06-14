@@ -48,7 +48,10 @@ func TestLog(t *testing.T) {
 			// wait for the l to write to the buffer.
 			time.Sleep(10 * time.Millisecond)
 			actualEvent := Event{}
-			json.Unmarshal(buf.Get(0), &actualEvent)
+			err := json.Unmarshal(buf.Get(0), &actualEvent)
+			if err != nil {
+				t.Error(err.Error())
+			}
 			if actualEvent.Level != test.level {
 				t.Errorf(
 					"Error, expected to find level `%s` found `%s`",
@@ -69,7 +72,6 @@ func TestLog(t *testing.T) {
 
 func TestInfo(t *testing.T) {
 	tests := []struct {
-		level   string
 		message string
 	}{
 		{message: "1"},
@@ -85,7 +87,10 @@ func TestInfo(t *testing.T) {
 			// wait for the l to write to the buffer.
 			time.Sleep(10 * time.Millisecond)
 			actualEvent := Event{}
-			json.Unmarshal(buf.Get(0), &actualEvent)
+			err := json.Unmarshal(buf.Get(0), &actualEvent)
+			if err != nil {
+				t.Error(err.Error())
+			}
 			if actualEvent.Message != test.message {
 				t.Errorf(
 					"Error, expected to find message: `%s` found `%s`",
@@ -99,7 +104,6 @@ func TestInfo(t *testing.T) {
 func TestInfof(t *testing.T) {
 	foo := "foo"
 	tests := []struct {
-		level   string
 		message string
 	}{
 		{message: "1 %s"},
@@ -115,7 +119,10 @@ func TestInfof(t *testing.T) {
 			// wait for the log to write to the buffer.
 			time.Sleep(10 * time.Millisecond)
 			actualEvent := Event{}
-			json.Unmarshal(buf.Get(0), &actualEvent)
+			err := json.Unmarshal(buf.Get(0), &actualEvent)
+			if err != nil {
+				t.Error(err.Error())
+			}
 			expectedMessage := fmt.Sprintf(test.message, foo)
 			if actualEvent.Message != expectedMessage {
 				t.Errorf(
@@ -130,7 +137,6 @@ func TestInfof(t *testing.T) {
 
 func TestWarning(t *testing.T) {
 	tests := []struct {
-		level   string
 		message string
 	}{
 		{message: "1"},
@@ -146,7 +152,10 @@ func TestWarning(t *testing.T) {
 			// wait for the l to write to the buffer.
 			time.Sleep(10 * time.Millisecond)
 			actualEvent := Event{}
-			json.Unmarshal(buf.Get(0), &actualEvent)
+			err := json.Unmarshal(buf.Get(0), &actualEvent)
+			if err != nil {
+				t.Error(err.Error())
+			}
 			if actualEvent.Message != test.message {
 				t.Errorf(
 					"Error, expected to find message: `%s` found `%s`",
@@ -161,7 +170,6 @@ func TestWarning(t *testing.T) {
 func TestWarningf(t *testing.T) {
 	foo := "foo"
 	tests := []struct {
-		level   string
 		message string
 	}{
 		{message: "1 %s"},
@@ -177,7 +185,10 @@ func TestWarningf(t *testing.T) {
 			// wait for the l to write to the buffer.
 			time.Sleep(10 * time.Millisecond)
 			actualEvent := Event{}
-			json.Unmarshal(buf.Get(0), &actualEvent)
+			err := json.Unmarshal(buf.Get(0), &actualEvent)
+			if err != nil {
+				t.Error(err.Error())
+			}
 			expectedMessage := fmt.Sprintf(test.message, foo)
 			if actualEvent.Message != expectedMessage {
 				t.Errorf(
@@ -192,7 +203,6 @@ func TestWarningf(t *testing.T) {
 
 func TestError(t *testing.T) {
 	tests := []struct {
-		level   string
 		message string
 	}{
 		{message: "1"},
@@ -208,7 +218,10 @@ func TestError(t *testing.T) {
 			// wait for the l to write to the buffer.
 			time.Sleep(10 * time.Millisecond)
 			actualEvent := Event{}
-			json.Unmarshal(buf.Get(0), &actualEvent)
+			err := json.Unmarshal(buf.Get(0), &actualEvent)
+			if err != nil {
+				t.Error(err.Error())
+			}
 			if actualEvent.Message != test.message {
 				t.Errorf(
 					"Error, expected to find message: `%s` found `%s`",
@@ -223,7 +236,6 @@ func TestError(t *testing.T) {
 func TestErrorf(t *testing.T) {
 	foo := "foo"
 	tests := []struct {
-		level   string
 		message string
 	}{
 		{message: "1 %s"},
@@ -239,7 +251,10 @@ func TestErrorf(t *testing.T) {
 			// wait for the l to write to the buffer.
 			time.Sleep(10 * time.Millisecond)
 			actualEvent := Event{}
-			json.Unmarshal(buf.Get(0), &actualEvent)
+			err := json.Unmarshal(buf.Get(0), &actualEvent)
+			if err != nil {
+				t.Error(err.Error())
+			}
 			expectedMessage := fmt.Sprintf(test.message, foo)
 			if actualEvent.Message != expectedMessage {
 				t.Errorf(
@@ -254,7 +269,6 @@ func TestErrorf(t *testing.T) {
 
 func TestFatal(t *testing.T) {
 	tests := []struct {
-		level   string
 		message string
 	}{
 		{message: "1"},
@@ -270,7 +284,10 @@ func TestFatal(t *testing.T) {
 			// wait for the l to write to the buffer.
 			time.Sleep(10 * time.Millisecond)
 			actualEvent := Event{}
-			json.Unmarshal(buf.Get(0), &actualEvent)
+			err := json.Unmarshal(buf.Get(0), &actualEvent)
+			if err != nil {
+				t.Error(err.Error())
+			}
 			if actualEvent.Message != test.message {
 				t.Errorf(
 					"Error, expected to find message: `%s` found `%s`",
@@ -285,7 +302,6 @@ func TestFatal(t *testing.T) {
 func TestFatalf(t *testing.T) {
 	foo := "foo"
 	tests := []struct {
-		level   string
 		message string
 	}{
 		{message: "1 %s"},
@@ -301,7 +317,10 @@ func TestFatalf(t *testing.T) {
 			// wait for the l to write to the buffer.
 			time.Sleep(10 * time.Millisecond)
 			actualEvent := Event{}
-			json.Unmarshal(buf.Get(0), &actualEvent)
+			err := json.Unmarshal(buf.Get(0), &actualEvent)
+			if err != nil {
+				t.Error(err.Error())
+			}
 			expectedMessage := fmt.Sprintf(test.message, foo)
 			if actualEvent.Message != expectedMessage {
 				t.Errorf(
