@@ -135,7 +135,7 @@ func TestInfof(t *testing.T) {
 	}
 }
 
-func TestWarning(t *testing.T) {
+func TestWarn(t *testing.T) {
 	tests := []struct {
 		message string
 	}{
@@ -148,7 +148,7 @@ func TestWarning(t *testing.T) {
 		t.Run(test.message, func(t *testing.T) {
 			buf := Buffer{}
 			l := New(WithWriter(&buf), WithExitFunc(func(_ int) {}))
-			l.Warning(test.message)
+			l.Warn(test.message)
 			// wait for the l to write to the buffer.
 			time.Sleep(10 * time.Millisecond)
 			actualEvent := Event{}
@@ -167,7 +167,7 @@ func TestWarning(t *testing.T) {
 	}
 }
 
-func TestWarningf(t *testing.T) {
+func TestWarnf(t *testing.T) {
 	foo := "foo"
 	tests := []struct {
 		message string
@@ -181,7 +181,7 @@ func TestWarningf(t *testing.T) {
 		t.Run(test.message, func(t *testing.T) {
 			buf := Buffer{}
 			l := New(WithWriter(&buf), WithExitFunc(func(_ int) {}))
-			l.Warningf(test.message, foo)
+			l.Warnf(test.message, foo)
 			// wait for the l to write to the buffer.
 			time.Sleep(10 * time.Millisecond)
 			actualEvent := Event{}

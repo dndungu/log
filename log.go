@@ -24,11 +24,11 @@ func (l Log) Infof(message string, args ...interface{}) {
 	l.Log(INFO, fmt.Sprintf(message, args...))
 }
 
-func (l Log) Warning(message string) {
+func (l Log) Warn(message string) {
 	l.Log(WARNING, message)
 }
 
-func (l Log) Warningf(message string, args ...interface{}) {
+func (l Log) Warnf(message string, args ...interface{}) {
 	l.Log(WARNING, fmt.Sprintf(message, args...))
 }
 
