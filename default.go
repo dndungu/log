@@ -10,9 +10,9 @@ var Error = DefaultLog.Error
 
 var Errorf = DefaultLog.Errorf
 
-var Warning = DefaultLog.Warning
+var Warn = DefaultLog.Warn
 
-var Warningf = DefaultLog.Warningf
+var Warnf = DefaultLog.Warnf
 
 var Fatal = DefaultLog.Fatal
 
