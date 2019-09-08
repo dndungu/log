@@ -3,13 +3,13 @@ package log
 type Level uint8
 
 const (
-	DEBUG = iota
-	INFO
-	WARNING
+	FATAL = iota
 	ERROR
-	FATAL
+	WARNING
+	INFO
+	DEBUG
 )
 
 func (l Level) String() string {
-	return []string{"debug", "info", "warning", "error", "fatal"}[l]
+	return []string{"fatal", "error", "warning", "info", "debug"}[l]
 }
