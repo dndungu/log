@@ -10,18 +10,26 @@ import (
 )
 
 type Log struct {
+	done     chan struct{}
 	exit     func(code int)
 	messages chan []byte
 	fields   map[string]interface{}
 	writer   io.Writer
 }
 
+func (l Log) Debug(message string) {
+	l.Log(DEBUG, message)
+}
+
+func (l Log) Debugf(message string, args ...interface{}) {
+	l.Logf(DEBUG, message, args...)
+}
 func (l Log) Info(message string) {
 	l.Log(INFO, message)
 }
 
 func (l Log) Infof(message string, args ...interface{}) {
-	l.Log(INFO, fmt.Sprintf(message, args...))
+	l.Logf(INFO, message, args...)
 }
 
 func (l Log) Warn(message string) {
@@ -29,7 +37,7 @@ func (l Log) Warn(message string) {
 }
 
 func (l Log) Warnf(message string, args ...interface{}) {
-	l.Log(WARNING, fmt.Sprintf(message, args...))
+	l.Logf(WARNING, message, args...)
 }
 
 func (l Log) Error(message string) {
@@ -37,26 +45,35 @@ func (l Log) Error(message string) {
 }
 
 func (l Log) Errorf(message string, args ...interface{}) {
-	l.Log(ERROR, fmt.Sprintf(message, args...))
+	l.Logf(ERROR, message, args...)
 }
 
 func (l Log) Fatal(message string) {
 	l.Log(FATAL, message)
 
-	close(l.messages)
+	l.Close()
+
+	l.exit(1)
 }
 
 func (l Log) Fatalf(message string, args ...interface{}) {
-	l.Log(FATAL, fmt.Sprintf(message, args...))
+	l.Logf(FATAL, message, args...)
 
-	close(l.messages)
+	l.Close()
+
+	l.exit(1)
 }
 
-func (l Log) Log(level, message string) {
+func (l Log) Close() {
+	close(l.messages)
+	<-l.done
+}
+
+func (l Log) Log(level Level, message string) {
 	e := Event{
 		Fields:    l.fields,
 		Message:   message,
-		Level:     level,
+		Level:     level.String(),
 		CreatedAt: time.Now().UTC(),
 	}
 
@@ -73,27 +90,13 @@ func (l Log) Log(level, message string) {
 	}
 }
 
-func (l Log) watch() {
-	var err error
-	for m := range l.messages {
-		_, err = l.writer.Write(m)
-
-		if err != nil {
-			return
-		}
-
-		_, err = l.writer.Write([]byte("\n"))
-
-		if err != nil {
-			return
-		}
-	}
-
-	l.exit(1)
+func (l Log) Logf(level Level, message string, args ...interface{}) {
+	l.Log(level, fmt.Sprintf(message, args...))
 }
 
-func New(options ...Option) *Log {
+func New(options ...Option) Interface {
 	l := Log{
+		done:     make(chan struct{}),
 		exit:     os.Exit,
 		fields:   make(map[string]interface{}),
 		messages: make(chan []byte),
@@ -104,7 +107,13 @@ func New(options ...Option) *Log {
 		option(&l)
 	}
 
-	go l.watch()
+	go func() {
+		for m := range l.messages {
+			l.writer.Write(append(m, 10))
+		}
+
+		l.done <- struct{}{}
+	}()
 
 	return &l
 }

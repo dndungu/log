@@ -1,19 +1,18 @@
 package log
 
-var DefaultLog = New()
+var Logger = New()
 
-var Info = DefaultLog.Info
+var Debug = Logger.Debug
+var Debugf = Logger.Debugf
 
-var Infof = DefaultLog.Infof
+var Info = Logger.Info
+var Infof = Logger.Infof
 
-var Error = DefaultLog.Error
+var Warn = Logger.Warn
+var Warnf = Logger.Warnf
 
-var Errorf = DefaultLog.Errorf
+var Error = Logger.Error
+var Errorf = Logger.Errorf
 
-var Warn = DefaultLog.Warn
-
-var Warnf = DefaultLog.Warnf
-
-var Fatal = DefaultLog.Fatal
-
-var Fatalf = DefaultLog.Fatalf
+var Fatal = Logger.Fatal
+var Fatalf = Logger.Fatalf
