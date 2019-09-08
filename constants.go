@@ -3,7 +3,7 @@ package log
 type Level uint8
 
 const (
-	FATAL = iota
+	FATAL Level = iota
 	ERROR
 	WARNING
 	INFO
