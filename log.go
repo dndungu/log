@@ -10,11 +10,11 @@ import (
 )
 
 type Log struct {
-	done     chan struct{}
-	exit     func(code int)
-	messages chan []byte
-	fields   map[string]interface{}
-	writer   io.Writer
+	once, done chan struct{}
+	exit       func(code int)
+	messages   chan []byte
+	fields     map[string]interface{}
+	writer     io.Writer
 }
 
 func (l Log) Debug(message string) {
@@ -65,6 +65,7 @@ func (l Log) Fatalf(message string, args ...interface{}) {
 }
 
 func (l Log) Close() {
+	l.once <- struct{}{}
 	close(l.messages)
 	<-l.done
 }
@@ -96,6 +97,7 @@ func (l Log) Logf(level Level, message string, args ...interface{}) {
 
 func New(options ...Option) *Log {
 	l := Log{
+		once:     make(chan struct{}, 1),
 		done:     make(chan struct{}),
 		exit:     os.Exit,
 		fields:   make(map[string]interface{}),
