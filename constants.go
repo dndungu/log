@@ -1,8 +1,15 @@
 package log
 
+type Level uint8
+
 const (
-	INFO    = "info"
-	WARNING = "warning"
-	ERROR   = "error"
-	FATAL   = "fatal"
+	DEBUG = iota
+	INFO
+	WARNING
+	ERROR
+	FATAL
 )
+
+func (l Level) String() string {
+	return []string{"debug", "info", "warning", "error", "fatal"}[l]
+}
