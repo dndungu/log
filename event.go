@@ -2,7 +2,7 @@ package log
 
 import "time"
 
-type Event struct {
+type event struct {
 	CreatedAt time.Time              `json:"time"`
 	Level     string                 `json:"level"`
 	Message   string                 `json:"message"`
