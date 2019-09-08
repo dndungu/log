@@ -46,7 +46,7 @@ func TestLog(t *testing.T) {
 			)
 			l.Log(test.level, test.message)
 			l.Close()
-			actualEvent := Event{}
+			actualEvent := event{}
 			err := json.Unmarshal(buf.Get(0), &actualEvent)
 			if err != nil {
 				t.Error(err.Error())
@@ -84,7 +84,7 @@ func TestDebug(t *testing.T) {
 			l := New(WithWriter(&buf), WithExitFunc(func(_ int) {}))
 			l.Debug(test.message)
 			l.Close()
-			actualEvent := Event{}
+			actualEvent := event{}
 			err := json.Unmarshal(buf.Get(0), &actualEvent)
 			if err != nil {
 				t.Error(err.Error())
@@ -115,7 +115,7 @@ func TestDebugf(t *testing.T) {
 			l := New(WithWriter(&buf), WithExitFunc(func(_ int) {}))
 			l.Debugf(test.message, foo)
 			l.Close()
-			actualEvent := Event{}
+			actualEvent := event{}
 			err := json.Unmarshal(buf.Get(0), &actualEvent)
 			if err != nil {
 				t.Error(err.Error())
@@ -147,7 +147,7 @@ func TestInfo(t *testing.T) {
 			l := New(WithWriter(&buf), WithExitFunc(func(_ int) {}))
 			l.Info(test.message)
 			l.Close()
-			actualEvent := Event{}
+			actualEvent := event{}
 			err := json.Unmarshal(buf.Get(0), &actualEvent)
 			if err != nil {
 				t.Error(err.Error())
@@ -178,7 +178,7 @@ func TestInfof(t *testing.T) {
 			l := New(WithWriter(&buf), WithExitFunc(func(_ int) {}))
 			l.Infof(test.message, foo)
 			l.Close()
-			actualEvent := Event{}
+			actualEvent := event{}
 			err := json.Unmarshal(buf.Get(0), &actualEvent)
 			if err != nil {
 				t.Error(err.Error())
@@ -210,7 +210,7 @@ func TestWarn(t *testing.T) {
 			l := New(WithWriter(&buf), WithExitFunc(func(_ int) {}))
 			l.Warn(test.message)
 			l.Close()
-			actualEvent := Event{}
+			actualEvent := event{}
 			err := json.Unmarshal(buf.Get(0), &actualEvent)
 			if err != nil {
 				t.Error(err.Error())
@@ -242,7 +242,7 @@ func TestWarnf(t *testing.T) {
 			l := New(WithWriter(&buf), WithExitFunc(func(_ int) {}))
 			l.Warnf(test.message, foo)
 			l.Close()
-			actualEvent := Event{}
+			actualEvent := event{}
 			err := json.Unmarshal(buf.Get(0), &actualEvent)
 			if err != nil {
 				t.Error(err.Error())
@@ -275,7 +275,7 @@ func TestError(t *testing.T) {
 			l.Error(test.message)
 			// wait for the l to write to the buffer.
 			time.Sleep(10 * time.Millisecond)
-			actualEvent := Event{}
+			actualEvent := event{}
 			err := json.Unmarshal(buf.Get(0), &actualEvent)
 			if err != nil {
 				t.Error(err.Error())
@@ -307,7 +307,7 @@ func TestErrorf(t *testing.T) {
 			l := New(WithWriter(&buf), WithExitFunc(func(_ int) {}))
 			l.Errorf(test.message, foo)
 			l.Close()
-			actualEvent := Event{}
+			actualEvent := event{}
 			err := json.Unmarshal(buf.Get(0), &actualEvent)
 			if err != nil {
 				t.Error(err.Error())
@@ -338,7 +338,7 @@ func TestFatal(t *testing.T) {
 			buf := Buffer{}
 			l := New(WithWriter(&buf), WithExitFunc(func(_ int) {}))
 			l.Fatal(test.message)
-			actualEvent := Event{}
+			actualEvent := event{}
 			err := json.Unmarshal(buf.Get(0), &actualEvent)
 			if err != nil {
 				t.Error(err.Error())
@@ -369,7 +369,7 @@ func TestFatalf(t *testing.T) {
 			buf := Buffer{}
 			l := New(WithWriter(&buf), WithExitFunc(func(_ int) {}))
 			l.Fatalf(test.message, foo)
-			actualEvent := Event{}
+			actualEvent := event{}
 			err := json.Unmarshal(buf.Get(0), &actualEvent)
 			if err != nil {
 				t.Error(err.Error())

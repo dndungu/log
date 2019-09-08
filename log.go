@@ -70,7 +70,7 @@ func (l Log) Close() {
 }
 
 func (l Log) Log(level Level, message string) {
-	e := Event{
+	e := event{
 		Fields:    l.fields,
 		Message:   message,
 		Level:     level.String(),
@@ -94,7 +94,7 @@ func (l Log) Logf(level Level, message string, args ...interface{}) {
 	l.Log(level, fmt.Sprintf(message, args...))
 }
 
-func New(options ...Option) Interface {
+func New(options ...Option) *Log {
 	l := Log{
 		done:     make(chan struct{}),
 		exit:     os.Exit,
